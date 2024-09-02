@@ -10,16 +10,16 @@ contract MerkleAirdrop is Ownable {
     IERC20 public token;
     bytes32 public merkleRoot;
 
-     mapping(address => bool) public hasClaimed;
+    mapping(address => bool) public hasClaimed;
 
     event Claimed(address indexed claimant, uint256 amount);
 
-      constructor(IERC20 _token, bytes32 _merkleRoot) {
+    constructor(IERC20 _token, bytes32 _merkleRoot) Ownable(msg.sender) {
         token = _token;
         merkleRoot = _merkleRoot;
     }
 
-function claim(uint256 amount, bytes32[] calldata merkleProof) external {
+    function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         require(!hasClaimed[msg.sender], "Airdrop already claimed");
 
         // Verify the Merkle proof
@@ -35,7 +35,7 @@ function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         emit Claimed(msg.sender, amount);
     }
 
-  // Function to update the Merkle root
+    // Function to update the Merkle root
     function updateMerkleRoot(bytes32 _newRoot) external onlyOwner {
         merkleRoot = _newRoot;
     }
@@ -45,5 +45,4 @@ function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         uint256 balance = token.balanceOf(address(this));
         require(token.transfer(owner(), balance), "Withdraw failed");
     }
-    
 }
