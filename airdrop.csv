@@ -1,0 +1,4 @@
+address,amount
+0x1234567890abcdef1234567890abcdef12345678,100
+0xabcdefabcdefabcdefabcdefabcdefabcdef12345678,200
+0xabcdef1234567890abcdef1234567890abcdef1234,300
