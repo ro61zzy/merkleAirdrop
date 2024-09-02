@@ -1,17 +1,21 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MerkleAirdrop is Ownable {
-
+    // The ERC20 token being airdropped
     IERC20 public token;
+
+    // The Merkle root
     bytes32 public merkleRoot;
 
+    // Mapping to track which addresses have claimed their airdrop
     mapping(address => bool) public hasClaimed;
 
+    // Event emitted when an airdrop is claimed
     event Claimed(address indexed claimant, uint256 amount);
 
     constructor(IERC20 _token, bytes32 _merkleRoot) Ownable(msg.sender) {
@@ -19,6 +23,7 @@ contract MerkleAirdrop is Ownable {
         merkleRoot = _merkleRoot;
     }
 
+    // Function to claim tokens
     function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         require(!hasClaimed[msg.sender], "Airdrop already claimed");
 
