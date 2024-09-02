@@ -6,10 +6,13 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MerkleAirdrop is Ownable {
+    
     IERC20 public token;
     bytes32 public merkleRoot;
 
      mapping(address => bool) public hasClaimed;
+
+    event Claimed(address indexed claimant, uint256 amount);
 
       constructor(IERC20 _token, bytes32 _merkleRoot) {
         token = _token;
@@ -29,6 +32,7 @@ function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         // Transfer the tokens
         require(token.transfer(msg.sender, amount), "Transfer failed");
 
+        emit Claimed(msg.sender, amount);
     }
 
 
