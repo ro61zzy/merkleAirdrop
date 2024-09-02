@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MerkleAirdrop is Ownable {
-    
+
     IERC20 public token;
     bytes32 public merkleRoot;
 
@@ -35,5 +35,15 @@ function claim(uint256 amount, bytes32[] calldata merkleProof) external {
         emit Claimed(msg.sender, amount);
     }
 
+  // Function to update the Merkle root
+    function updateMerkleRoot(bytes32 _newRoot) external onlyOwner {
+        merkleRoot = _newRoot;
+    }
 
+    // Function to withdraw remaining tokens after the airdrop
+    function withdrawRemainingTokens() external onlyOwner {
+        uint256 balance = token.balanceOf(address(this));
+        require(token.transfer(owner(), balance), "Withdraw failed");
+    }
+    
 }
