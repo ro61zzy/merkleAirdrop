@@ -1,4 +1,3 @@
-javascript
 const fs = require('fs');
 const keccak256 = require('keccak256');
 const { MerkleTree } = require('merkletreejs');
